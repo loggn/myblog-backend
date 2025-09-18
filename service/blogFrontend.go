@@ -17,20 +17,20 @@ func GetClasses(c *gin.Context) {
 }
 
 func GetArticlesByClassID(c *gin.Context) {
-	classIDStr := c.Param("class_id")      //这里的Param（大概知道，但是顺便复习一下）
-	classID, _ := strconv.Atoi(classIDStr) //这里为什么要转成int类型？而且，为什么传过来的时候不是int类型？
+	classIDStr := c.Param("class_id")
+	classID, _ := strconv.Atoi(classIDStr)
 
 	var articles []model.Article
 	config.DB.Where("class_id = ?", classID).Find(&articles)
 
-	res := make([]map[string]interface{}, 0) //哦哦，这里的map是指的键值对是吗？
+	res := make([]map[string]interface{}, 0)
 	for _, a := range articles {
 		res = append(res, map[string]interface{}{
 			"id":       a.ID,
 			"class_id": a.ClassID,
 			"title":    a.Title,
 			"date":     a.Date,
-			"tags":     strings.Split(a.Tags, ","), //以,号分割
+			"tags":     strings.Split(a.Tags, ","),
 			"file":     a.File,
 		})
 	}
